@@ -65,6 +65,10 @@ public class EmployeeController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> testEmployee(){
+        return ResponseEntity.ok("Test rout is working");
+    }
 
 }
 
