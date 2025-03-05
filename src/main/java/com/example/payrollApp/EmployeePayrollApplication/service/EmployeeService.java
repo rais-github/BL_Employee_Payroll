@@ -7,7 +7,7 @@ import com.example.payrollApp.EmployeePayrollApplication.model.Employee;
 import com.example.payrollApp.EmployeePayrollApplication.repository.EmployeeRespository;
 import com.example.payrollApp.EmployeePayrollApplication.service.Interface.IEmployeeService;
 import org.springframework.stereotype.Service;
-
+import com.example.payrollApp.EmployeePayrollApplication.exceptions.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,22 +16,28 @@ public class EmployeeService implements IEmployeeService {
 
     private final EmployeeRespository employeeRespository;
 
-    public EmployeeService(EmployeeRespository employeeRespository){
-        this.employeeRespository=employeeRespository;
+    public EmployeeService(EmployeeRespository employeeRespository) {
+        this.employeeRespository = employeeRespository;
     }
 
     @Override
     public List<Employee> getAllEmployees() {
         return employeeRespository.findAll();
     }
+
     @Override
     public Optional<Employee> getEmployeeById(Long id) {
-        return employeeRespository.findById(id);
+        Optional<Employee> employee = employeeRespository.findById(id);
+        if (employee.isEmpty()) {
+            throw new EmployeeNotFoundException("Employee with ID " + id + " not found");
+        }
+        return employee;
     }
+
     @Override
     public Employee createEmployee(EmployeeDto employeeDto) {
         if (employeeDto.getAddress() == null || employeeDto.getAddress().isEmpty()) {
-            throw new IllegalArgumentException("Address cannot be null or empty!");
+            throw new InvalidEmployeeDataException("Address cannot be null or empty!");
         }
 
         Employee employee = new Employee();
@@ -47,9 +53,12 @@ public class EmployeeService implements IEmployeeService {
 
         return employeeRespository.save(employee);
     }
+
     @Override
     public Employee updateEmployee(Long id, Employee employeeDetails) {
-        Employee employee = employeeRespository.findById(id).orElseThrow();
+        Employee employee = employeeRespository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
+
         employee.setName(employeeDetails.getName());
         employee.setRole(employeeDetails.getRole());
         employee.setSalary(employeeDetails.getSalary());
@@ -59,11 +68,15 @@ public class EmployeeService implements IEmployeeService {
         employee.setEmail(employeeDetails.getEmail());
         employee.setPhoneNumber(employeeDetails.getPhoneNumber());
         employee.setAddress(employeeDetails.getAddress());
+
         return employeeRespository.save(employee);
     }
+
     @Override
     public void deleteEmployee(Long id) {
+        if (!employeeRespository.existsById(id)) {
+            throw new EmployeeNotFoundException("Employee with ID " + id + " not found");
+        }
         employeeRespository.deleteById(id);
     }
 }
-
