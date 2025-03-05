@@ -5,13 +5,14 @@ package com.example.payrollApp.EmployeePayrollApplication.service;
 import com.example.payrollApp.EmployeePayrollApplication.dto.EmployeeDto;
 import com.example.payrollApp.EmployeePayrollApplication.model.Employee;
 import com.example.payrollApp.EmployeePayrollApplication.repository.EmployeeRespository;
+import com.example.payrollApp.EmployeePayrollApplication.service.Interface.IEmployeeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EmployeeService {
+public class EmployeeService implements IEmployeeService {
 
     private final EmployeeRespository employeeRespository;
 
@@ -19,14 +20,15 @@ public class EmployeeService {
         this.employeeRespository=employeeRespository;
     }
 
+    @Override
     public List<Employee> getAllEmployees() {
         return employeeRespository.findAll();
     }
-
+    @Override
     public Optional<Employee> getEmployeeById(Long id) {
         return employeeRespository.findById(id);
     }
-
+    @Override
     public Employee createEmployee(EmployeeDto employeeDto) {
         if (employeeDto.getAddress() == null || employeeDto.getAddress().isEmpty()) {
             throw new IllegalArgumentException("Address cannot be null or empty!");
@@ -45,7 +47,7 @@ public class EmployeeService {
 
         return employeeRespository.save(employee);
     }
-
+    @Override
     public Employee updateEmployee(Long id, Employee employeeDetails) {
         Employee employee = employeeRespository.findById(id).orElseThrow();
         employee.setName(employeeDetails.getName());
@@ -59,7 +61,7 @@ public class EmployeeService {
         employee.setAddress(employeeDetails.getAddress());
         return employeeRespository.save(employee);
     }
-
+    @Override
     public void deleteEmployee(Long id) {
         employeeRespository.deleteById(id);
     }
