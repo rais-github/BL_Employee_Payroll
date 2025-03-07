@@ -56,7 +56,7 @@ public class EmployeeController {
             ResponseDto response = new ResponseDto("Invalid input data", bindingResult.getAllErrors());
             return ResponseEntity.badRequest().body(response);
         }
-        Employee updatedEmployee = employeeService.updateEmployee(id, mapToEmployee(employeeDto));
+        Employee updatedEmployee = employeeService.updateEmployee(id, employeeDto);
         ResponseDto response = new ResponseDto("Employee updated successfully", updatedEmployee);
         return ResponseEntity.ok(response);
     }
@@ -66,19 +66,5 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
         ResponseDto response = new ResponseDto("Employee deleted successfully", null);
         return ResponseEntity.noContent().build();
-    }
-
-    private Employee mapToEmployee(EmployeeDto employeeDto) {
-        Employee employee = new Employee();
-        employee.setName(employeeDto.getName());
-        employee.setRole(employeeDto.getRole());
-        employee.setSalary(employeeDto.getSalary());
-        employee.setDateOfJoining(employeeDto.getDateOfJoining());
-        employee.setLeaveBalance(employeeDto.getLeaveBalance());
-        employee.setDepartment(employeeDto.getDepartment());
-        employee.setEmail(employeeDto.getEmail());
-        employee.setPhoneNumber(employeeDto.getPhoneNumber());
-        employee.setAddress(employeeDto.getAddress());
-        return employee;
     }
 }

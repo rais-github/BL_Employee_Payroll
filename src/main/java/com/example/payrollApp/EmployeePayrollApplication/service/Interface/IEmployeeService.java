@@ -1,4 +1,5 @@
 package com.example.payrollApp.EmployeePayrollApplication.service.Interface;
+
 import com.example.payrollApp.EmployeePayrollApplication.dto.EmployeeDto;
 import com.example.payrollApp.EmployeePayrollApplication.model.Employee;
 
@@ -13,8 +14,7 @@ public interface IEmployeeService {
 
     Employee createEmployee(EmployeeDto employeeDto);
 
-    Employee updateEmployee(Long id, Employee employeeDetails);
+    Employee updateEmployee(Long id, EmployeeDto employeeDto);
 
     void deleteEmployee(Long id);
 }
-
