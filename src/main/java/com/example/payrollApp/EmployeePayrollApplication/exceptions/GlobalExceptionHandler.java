@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
         }
-        log.error("Some method argument validation error in global exception");
+//        log.error("Some method argument validation error in global exception");
         return new ResponseEntity<>(new ResponseDto("Validation Failed", errors), HttpStatus.BAD_REQUEST);
     }
 

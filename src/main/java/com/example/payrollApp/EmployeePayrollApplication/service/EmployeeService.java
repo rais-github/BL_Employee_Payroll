@@ -35,10 +35,6 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public Employee createEmployee(EmployeeDto employeeDto) {
-        if (employeeDto.getAddress() == null || employeeDto.getAddress().isEmpty()) {
-            throw new InvalidEmployeeDataException("Address cannot be null or empty!");
-        }
-
         Employee employee = mapToEmployee(employeeDto);
         return employeeRespository.save(employee);
     }
@@ -48,7 +44,6 @@ public class EmployeeService implements IEmployeeService {
         Employee employee = employeeRespository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
 
-        // Update fields with new values from DTO
         employee.setName(employeeDto.getName());
         employee.setRole(employeeDto.getRole());
         employee.setSalary(employeeDto.getSalary());
@@ -73,7 +68,6 @@ public class EmployeeService implements IEmployeeService {
         employeeRespository.deleteById(id);
     }
 
-    // Helper method to convert DTO to Entity
     private Employee mapToEmployee(EmployeeDto employeeDto) {
         Employee employee = new Employee();
         employee.setName(employeeDto.getName());

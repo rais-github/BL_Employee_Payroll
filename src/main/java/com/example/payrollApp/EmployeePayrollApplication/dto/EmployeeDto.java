@@ -2,6 +2,7 @@ package com.example.payrollApp.EmployeePayrollApplication.dto;
 
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.List;
 
 public class EmployeeDto {
 
@@ -20,8 +21,8 @@ public class EmployeeDto {
     @Min(value = 0, message = "Leave balance cannot be negative")
     private int leaveBalance;
 
-    @NotEmpty(message = "Department is mandatory")
-    private String department;
+    @NotEmpty(message = "Departments cannot be empty")
+    private List<String> department;
 
     @Email(message = "Email must be valid")
     @NotEmpty(message = "Email is mandatory")
@@ -38,7 +39,7 @@ public class EmployeeDto {
     @Pattern(regexp = "Male|Female|Other", message = "Gender must be Male, Female, or Other")
     private String gender;
 
-    private String note;  // Optional field, so no validation required
+    private String note;
 
     @NotEmpty(message = "Profile picture URL is mandatory")
     @Pattern(regexp = "^(http|https)://.*", message = "Profile picture must be a valid URL")
@@ -48,7 +49,7 @@ public class EmployeeDto {
     public EmployeeDto() {}
 
     public EmployeeDto(String name, String role, double salary, LocalDate dateOfJoining, int leaveBalance,
-                       String department, String email, String phoneNumber, String address,
+                       List<String> department, String email, String phoneNumber, String address,
                        String gender, String note, String profilePic) {
         this.name = name;
         this.role = role;
@@ -104,11 +105,11 @@ public class EmployeeDto {
         this.leaveBalance = leaveBalance;
     }
 
-    public String getDepartment() {
+    public List<String> getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(List<String> department) {
         this.department = department;
     }
 

@@ -3,6 +3,7 @@ package com.example.payrollApp.EmployeePayrollApplication.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,7 +19,12 @@ public class Employee {
     @Column(name = "date_of_joining")
     private LocalDate dateOfJoining;
     private int leaveBalance;
-    private String department;
+
+    @ElementCollection
+    @CollectionTable(name = "employee_department", joinColumns = @JoinColumn(name = "employee_id"))
+    @Column(name = "department")
+    private List<String> department;
+
     private String email;
     private String phoneNumber;
     private String address;
@@ -76,11 +82,11 @@ public class Employee {
         this.leaveBalance = leaveBalance;
     }
 
-    public String getDepartment() {
+    public List<String> getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(List<String> department) {
         this.department = department;
     }
 
