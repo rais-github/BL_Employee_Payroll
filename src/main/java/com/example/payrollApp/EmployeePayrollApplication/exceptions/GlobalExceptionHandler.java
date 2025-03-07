@@ -1,6 +1,7 @@
 package com.example.payrollApp.EmployeePayrollApplication.exceptions;
 
 import com.example.payrollApp.EmployeePayrollApplication.dto.ResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,14 +13,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-
+    private static final String message = "Exception while processing REST request!";
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseDto> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
         }
+        log.error("Some method argument validation error in global exception");
         return new ResponseEntity<>(new ResponseDto("Validation Failed", errors), HttpStatus.BAD_REQUEST);
     }
 
